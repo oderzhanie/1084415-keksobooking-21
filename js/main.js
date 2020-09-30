@@ -17,23 +17,24 @@ const photos = [
   `http://o0.github.io/assets/images/tokyo/hotel2.jpg`,
   `http://o0.github.io/assets/images/tokyo/hotel3.jpg`
 ];
+
 const clientWidth = document.querySelector(`.map__pins`).clientWidth;
 const pinItems = 8;
 
-const getRandomNumber = function (min, max) {
+const getRandomNumber = (min, max) => {
   const rand = min - 0.5 + Math.random() * (max - min + 1);
   return Math.round(rand);
 };
 
-const getRandomIndex = function (array) {
+const getRandomIndex = (array) => {
   return getRandomNumber(0, array.length - 1);
 };
 
-const getRandomItem = function (collection) {
+const getRandomItem = (collection) => {
   return collection[getRandomIndex(collection)];
 };
 
-const getRandomArray = function (arr) {
+const getRandomArray = (arr) => {
   const result = [];
   const clonedArr = arr.slice();
   const randomArrayLength = getRandomNumber(1, arr.length);
@@ -45,7 +46,7 @@ const getRandomArray = function (arr) {
   return result;
 };
 
-const generateIndices = function (number) {
+const generateIndices = (number) => {
   const indices = [];
   for (let i = 0; i < number; i++) {
     indices[i] = `0` + (i + 1);
@@ -54,13 +55,13 @@ const generateIndices = function (number) {
 };
 const indices = generateIndices(pinItems);
 
-const getUniqueEl = function (arr) {
+const getUniqueEl = (arr) => {
   const randomEl = arr.splice(getRandomNumber(0, arr.length - 1), 1)[0];
   return randomEl;
 };
 
 const similarObjects = [];
-const getSimilarObjects = function (quantity) {
+const getSimilarObjects = (quantity) => {
   for (let i = 0; i < quantity; i++) {
     const ObjectLocation = {
       x: getRandomNumber(0, clientWidth),
@@ -110,10 +111,9 @@ for (let i = 0; i < pinItems; i++) {
 mapPins.appendChild(fragment);
 
 const cardTemplate = document.querySelector(`#card`).content;
-
 const cardFragment = document.createDocumentFragment();
 
-for (let x = pinItems - 1; x >= 0; x--) {
+for (let i = pinItems - 1; i >= 0; i--) {
   const clonedCard = cardTemplate.cloneNode(true);
 
   const cardPopup = clonedCard.querySelector(`.map__card`);
@@ -127,33 +127,33 @@ for (let x = pinItems - 1; x >= 0; x--) {
   const cardDescription = cardPopup.querySelector(`.popup__description`);
   const cardPhotos = cardPopup.querySelector(`.popup__photos`);
   const cardAvatar = cardPopup.querySelector(`.popup__avatar`);
-  cardTitle.textContent = similarObjects[x].offer.title;
-  cardAddress.textContent = similarObjects[x].offer.address;
-  cardPrice.innerHTML = similarObjects[x].offer.price + `&#x20bd;<span>/ночь</span>`;
-  cardType.textContent = OFFER_TYPES_TITLES[similarObjects[x].offer.type];
+  cardTitle.textContent = similarObjects[i].offer.title;
+  cardAddress.textContent = similarObjects[i].offer.address;
+  cardPrice.innerHTML = similarObjects[i].offer.price + `&#x20bd;<span>/ночь</span>`;
+  cardType.textContent = OFFER_TYPES_TITLES[similarObjects[i].offer.type];
 
-  cardCapacity.textContent = similarObjects[x].offer.rooms + ` комнаты для ` + similarObjects[x].offer.guests + ` гостей`;
-  cardCheckTime.textContent = `Заезд после ` + similarObjects[x].offer.checkin + `, выезд до ` + similarObjects[x].offer.checkout;
-  for (let f = 0; f < features.length; f++) {
-    const feature = features[f];
-    if (!similarObjects[x].offer.features.includes(feature)) {
+  cardCapacity.textContent = similarObjects[i].offer.rooms + ` комнаты для ` + similarObjects[i].offer.guests + ` гостей`;
+  cardCheckTime.textContent = `Заезд после ` + similarObjects[i].offer.checkin + `, выезд до ` + similarObjects[i].offer.checkout;
+
+  for (const feature of features) {
+    if (!similarObjects[i].offer.features.includes(feature)) {
       const featureNode = cardFeatures.querySelector(`.popup__feature--` + feature);
       featureNode.classList.add(`visually-hidden`);
     }
   }
 
-  cardDescription.textContent = similarObjects[x].offer.description;
-  const photosLength = similarObjects[x].offer.photos.length;
+  cardDescription.textContent = similarObjects[i].offer.description;
+  const photosLength = similarObjects[i].offer.photos.length;
   const firstPhoto = cardPhotos.querySelector(`.popup__photo`);
-  firstPhoto.src = similarObjects[x].offer.photos[0];
+  firstPhoto.src = similarObjects[i].offer.photos[0];
   if (photosLength > 1) {
     for (let j = 1; j < photosLength; j++) {
       const clonedPhoto = firstPhoto.cloneNode(true);
-      clonedPhoto.src = similarObjects[x].offer.photos[j];
+      clonedPhoto.src = similarObjects[i].offer.photos[j];
       cardPhotos.appendChild(clonedPhoto);
     }
   }
-  cardAvatar.src = similarObjects[x].author.avatar;
+  cardAvatar.src = similarObjects[i].author.avatar;
   cardFragment.appendChild(clonedCard);
 }
 const mapFilters = document.querySelector(`.map__filters-container`);
