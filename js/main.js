@@ -1,9 +1,18 @@
 'use strict';
 
+const INACTIVE_PIN_WIDTH_HALF = 20;
+const INACTIVE_PIN_HEIGHT_HALF = 22;
 const PIN_WIDTH_HALF = 20;
 const PIN_HEIGHT = 40;
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
+const CUSTOM_MESSAGES_ROOMS = {
+  manyPeople: `Число людей не может быть больше количества комнат`,
+  fewRooms: `Число комнат не может быть меньше количества людей`,
+  nonResidentialRooms: `Вариант "100 комнат" можно выбрать только не для гостей`,
+  nonResidentialGuests: `Не для гостей можно выбрать только вариант "100 комнат"`
+};
+
 // const OFFER_TYPES_TITLES = {
 //   flat: `Квартира`,
 //   bungalo: `Бунгало`,
@@ -113,7 +122,7 @@ let getPinCoords = () => {
   const posX = mainPin.offsetLeft;
   const posY = mainPin.offsetTop;
 
-  const address = map.classList.contains(`map--faded`) ? `${posX + 20}, ${posY + 22}`
+  const address = map.classList.contains(`map--faded`) ? `${posX + INACTIVE_PIN_WIDTH_HALF}, ${posY + INACTIVE_PIN_HEIGHT_HALF}`
     : `${posX + PIN_WIDTH_HALF}, ${posY + PIN_HEIGHT}`;
 
   return address;
@@ -131,7 +140,8 @@ const activatePage = () => {
   map.classList.remove(`map--faded`);
   const mapPins = document.querySelector(`.map__pins`);
   const pinTemplate = document.querySelector(`#pin`).content;
-  const fragment = document.createDocumentFragment();
+
+  const similarPinsFragment = document.createDocumentFragment();
   for (let i = 0; i < pinItems; i++) {
     const clonedPin = pinTemplate.cloneNode(true);
     const pinButton = clonedPin.querySelector(`button`);
@@ -142,10 +152,10 @@ const activatePage = () => {
     pinButton.id = similarObjects[i].id;
     pinImg.src = similarObjects[i].author.avatar;
     pinImg.alt = similarObjects[i].offer.title;
-    fragment.appendChild(clonedPin);
+    similarPinsFragment.appendChild(clonedPin);
   }
 
-  mapPins.appendChild(fragment);
+  mapPins.appendChild(similarPinsFragment);
 
   addressField.value = getPinCoords();
 };
@@ -264,18 +274,15 @@ const roomsChangeHandler = () => {
   const indexSelectedRooms = roomsNumber.selectedIndex;
   const indexSelectedCapacity = capacity.selectedIndex;
 
-  const optionsRooms = roomsNumber.querySelectorAll(`option`)[indexSelectedRooms];
-  const selectedRooms = Number(optionsRooms.getAttribute(`value`));
-
-  const optionsCapacity = capacity.querySelectorAll(`option`)[indexSelectedCapacity];
-  const selectedCapacity = Number(optionsCapacity.getAttribute(`value`));
+  const selectedRooms = Number(roomsNumber.options[indexSelectedRooms].value);
+  const selectedCapacity = Number(capacity.options[indexSelectedCapacity].value);
 
   switch (selectedRooms) {
     case 1:
       if (selectedCapacity === 0) {
-        roomsNumber.setCustomValidity(`Не для гостей можно выбрать только вариант "100 комнат`);
+        roomsNumber.setCustomValidity(CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
       } else if (selectedCapacity > 1) {
-        roomsNumber.setCustomValidity(`Число комнат не может быть меньше количества людей`);
+        roomsNumber.setCustomValidity(CUSTOM_MESSAGES_ROOMS.fewRooms);
       } else {
         roomsNumber.setCustomValidity(``);
       }
@@ -283,9 +290,9 @@ const roomsChangeHandler = () => {
 
     case 2:
       if (selectedCapacity === 0) {
-        roomsNumber.setCustomValidity(`Не для гостей можно выбрать только вариант "100 комнат`);
-      } else if (selectedCapacity < 2) {
-        roomsNumber.setCustomValidity(`Число комнат не может быть меньше количества людей`);
+        roomsNumber.setCustomValidity(CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
+      } else if (selectedCapacity > 2) {
+        roomsNumber.setCustomValidity(CUSTOM_MESSAGES_ROOMS.fewRooms);
       } else {
         roomsNumber.setCustomValidity(``);
       }
@@ -293,9 +300,7 @@ const roomsChangeHandler = () => {
 
     case 3:
       if (selectedCapacity === 0) {
-        roomsNumber.setCustomValidity(`Не для гостей можно выбрать только вариант "100 комнат`);
-      } else if (selectedCapacity < 3) {
-        roomsNumber.setCustomValidity(`Число комнат не может быть меньше количества людей`);
+        roomsNumber.setCustomValidity(CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
       } else {
         roomsNumber.setCustomValidity(``);
       }
@@ -303,7 +308,7 @@ const roomsChangeHandler = () => {
 
     case 100:
       if (selectedCapacity > 0) {
-        roomsNumber.setCustomValidity(`Вариант "100 комнат" можно выбрать только не для гостей`);
+        roomsNumber.setCustomValidity(CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
       } else {
         roomsNumber.setCustomValidity(``);
       }
@@ -321,16 +326,13 @@ const capacityChangeHandler = () => {
   const indexSelectedRooms = roomsNumber.selectedIndex;
   const indexSelectedCapacity = capacity.selectedIndex;
 
-  const optionsRooms = roomsNumber.querySelectorAll(`option`)[indexSelectedRooms];
-  const selectedRooms = Number(optionsRooms.getAttribute(`value`));
-
-  const optionsCapacity = capacity.querySelectorAll(`option`)[indexSelectedCapacity];
-  const selectedCapacity = Number(optionsCapacity.getAttribute(`value`));
+  const selectedRooms = Number(roomsNumber.options[indexSelectedRooms].value);
+  const selectedCapacity = Number(capacity.options[indexSelectedCapacity].value);
 
   switch (selectedCapacity) {
     case 1:
       if (selectedRooms === 100) {
-        capacity.setCustomValidity(`Вариант "100 комнат" можно выбрать только не для гостей`);
+        capacity.setCustomValidity(CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
       } else {
         capacity.setCustomValidity(``);
       }
@@ -338,9 +340,9 @@ const capacityChangeHandler = () => {
 
     case 2:
       if (selectedRooms === 100) {
-        capacity.setCustomValidity(`Вариант "100 комнат" можно выбрать только не для гостей`);
+        capacity.setCustomValidity(CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
       } else if (selectedRooms < 2) {
-        capacity.setCustomValidity(`Число людей не может быть больше количества комнат`);
+        capacity.setCustomValidity(CUSTOM_MESSAGES_ROOMS.manyPeople);
       } else {
         capacity.setCustomValidity(``);
       }
@@ -348,9 +350,9 @@ const capacityChangeHandler = () => {
 
     case 3:
       if (selectedRooms === 100) {
-        capacity.setCustomValidity(`Вариант "100 комнат" можно выбрать только не для гостей`);
+        capacity.setCustomValidity(CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
       } else if (selectedRooms < 3) {
-        capacity.setCustomValidity(`Число людей не может быть больше количества комнат`);
+        capacity.setCustomValidity(CUSTOM_MESSAGES_ROOMS.manyPeople);
       } else {
         capacity.setCustomValidity(``);
       }
@@ -358,7 +360,7 @@ const capacityChangeHandler = () => {
 
     case 0:
       if (selectedRooms !== 100) {
-        capacity.setCustomValidity(`Не для гостей можно выбрать только вариант "100 комнат"`);
+        capacity.setCustomValidity(CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
       } else {
         capacity.setCustomValidity(``);
       }
