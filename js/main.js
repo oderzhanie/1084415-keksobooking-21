@@ -413,6 +413,30 @@ capacity.addEventListener(`change`, () => {
 const price = adForm.querySelector(`#price`);
 const accomodationType = adForm.querySelector(`#type`);
 
+const accomodationTypeChangeHandler = () => {
+  const accType = accomodationType.value;
+
+  switch (accType) {
+    case `bungalow`:
+      price.placeholder = MIN_PRICES.bungalo;
+      break;
+
+    case `flat`:
+      price.placeholder = MIN_PRICES.flat;
+      break;
+
+    case `house`:
+      price.placeholder = MIN_PRICES.house;
+      break;
+
+    case `palace`:
+      price.placeholder = MIN_PRICES.palace;
+      break;
+  }
+};
+
+accomodationType.addEventListener(`change`, accomodationTypeChangeHandler);
+
 price.addEventListener(`invalid`, () => {
   if (price.validity.valueMissing) {
     price.setCustomValidity(`Обязательное поле`);
