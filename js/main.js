@@ -7,24 +7,39 @@ const PIN_HEIGHT = 40;
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
-const MIN_PRICES = {
-  flat: 1000,
-  bungalo: 0,
-  house: 5000,
-  palace: 10000
+
+const Accommodation = {
+  PALACE: `palace`,
+  FLAT: `flat`,
+  HOUSE: `house`,
+  BUNGALOW: `bungalow`
 };
+
+const MIN_PRICES = {
+  [Accommodation.FLAT]: 1000,
+  [Accommodation.BUNGALOW]: 0,
+  [Accommodation.HOUSE]: 5000,
+  [Accommodation.PALACE]: 10000
+};
+
+const OFFER_TYPES_TITLES = {
+  [Accommodation.FLAT]: `Квартира`,
+  [Accommodation.BUNGALOW]: `Бунгало`,
+  [Accommodation.HOUSE]: `Дом`,
+  [Accommodation.PALACE]: `Дворец`
+};
+
+const OFFER_TYPES_TITLES_GENITIVE = {
+  [Accommodation.FLAT]: `квартиры`,
+  [Accommodation.HOUSE]: `дома`,
+  [Accommodation.PALACE]: `дворца`
+};
+
 const CUSTOM_MESSAGES_ROOMS = {
   manyPeople: `Число людей не может быть больше количества комнат`,
   fewRooms: `Число комнат не может быть меньше количества людей`,
   nonResidentialRooms: `Вариант "100 комнат" можно выбрать только не для гостей`,
   nonResidentialGuests: `Не для гостей можно выбрать только вариант "100 комнат"`
-};
-
-const OFFER_TYPES_TITLES = {
-  flat: `Квартира`,
-  bungalo: `Бунгало`,
-  house: `Дом`,
-  palace: `Дворец`
 };
 
 const types = [`palace`, `flat`, `house`, `boungalo`];
@@ -123,7 +138,7 @@ adFormFieldsets.forEach((child) => {
 });
 
 const addressField = adForm.querySelector(`#address`);
-addressField.setAttribute(`disabled`, ``);
+addressField.setAttribute(`readonly`, ``); // Был disabled
 
 let getPinCoords = () => {
   const posX = mainPin.offsetLeft;
@@ -226,21 +241,21 @@ const createPopupTemplate = (pin) => {
       const featureNode = cardFeatures.querySelector(`.popup__feature--` + feature);
       featureNode.classList.add(`visually-hidden`);
     }
-
-    cardDescription.textContent = similarObjects[pinIndex].offer.description;
-    const photosLength = similarObjects[pinIndex].offer.photos.length;
-    const firstPhoto = cardPhotos.querySelector(`.popup__photo`);
-    firstPhoto.src = similarObjects[pinIndex].offer.photos[0];
-    if (photosLength > 1) {
-      for (let j = 1; j < photosLength; j++) {
-        const clonedPhoto = firstPhoto.cloneNode(true);
-        clonedPhoto.src = similarObjects[pinIndex].offer.photos[j];
-        cardPhotos.appendChild(clonedPhoto);
-      }
-    }
-    cardAvatar.src = similarObjects[pinIndex].author.avatar;
-    cardFragment.appendChild(clonedCard);
   }
+
+  cardDescription.textContent = similarObjects[pinIndex].offer.description;
+  const photosLength = similarObjects[pinIndex].offer.photos.length;
+  const firstPhoto = cardPhotos.querySelector(`.popup__photo`);
+  firstPhoto.src = similarObjects[pinIndex].offer.photos[0];
+  if (photosLength > 1) {
+    for (let j = 1; j < photosLength; j++) {
+      const clonedPhoto = firstPhoto.cloneNode(true);
+      clonedPhoto.src = similarObjects[pinIndex].offer.photos[j];
+      cardPhotos.appendChild(clonedPhoto);
+    }
+  }
+  cardAvatar.src = similarObjects[pinIndex].author.avatar;
+  cardFragment.appendChild(clonedCard);
 
   return cardFragment;
 };
@@ -415,45 +430,41 @@ const accomodationType = adForm.querySelector(`#type`);
 
 const accomodationTypeChangeHandler = () => {
   const accType = accomodationType.value;
+  const priceValue = price.value;
 
-  switch (accType) {
-    case `bungalow`:
-      price.placeholder = MIN_PRICES.bungalo;
-      break;
+  price.placeholder = MIN_PRICES[accType];
 
-    case `flat`:
-      price.placeholder = MIN_PRICES.flat;
-      break;
-
-    case `house`:
-      price.placeholder = MIN_PRICES.house;
-      break;
-
-    case `palace`:
-      price.placeholder = MIN_PRICES.palace;
-      break;
+  if (priceValue < MIN_PRICES[accType]) {
+    price.setCustomValidity(`Минимальная стоимость для ${OFFER_TYPES_TITLES_GENITIVE[accType]} - ${MIN_PRICES[accType]} руб.`);
+  } else {
+    price.setCustomValidity(``);
   }
+  price.reportValidity();
 };
 
 accomodationType.addEventListener(`change`, accomodationTypeChangeHandler);
 
 price.addEventListener(`invalid`, () => {
+  // const priceValue = price.value;
+  // const accType = accomodationType.value;
+
   if (price.validity.valueMissing) {
     price.setCustomValidity(`Обязательное поле`);
+  // } else if (priceValue < MIN_PRICES[accType]) {
+  //   price.setCustomValidity(`Минимальная стоимость для ${OFFER_TYPES_TITLES_GENITIVE[accType]} - ${MIN_PRICES[accType]} руб.`);
+  // } else {
+  //   price.setCustomValidity(``);
   }
 });
 
 price.addEventListener(`input`, () => {
-  let priceValue = price.value;
+  const priceValue = price.value;
+  const accType = accomodationType.value;
 
   if (priceValue > MAX_PRICE) {
     price.setCustomValidity(`Максимально допустимая стоимость - ${MAX_PRICE} руб.`);
-  } else if (accomodationType.value === `flat` && priceValue < MIN_PRICES.flat) {
-    price.setCustomValidity(`Минимальная стоимость для квартиры - ${MIN_PRICES.flat} руб.`);
-  } else if (accomodationType.value === `house` && priceValue < MIN_PRICES.house) {
-    price.setCustomValidity(`Минимальная стоимость для дома - ${MIN_PRICES.house} руб.`);
-  } else if (accomodationType.value === `palace` && priceValue < MIN_PRICES.palace) {
-    price.setCustomValidity(`Минимальная стоимость для дворца - ${MIN_PRICES.palace} руб.`);
+  } else if (priceValue < MIN_PRICES[accType]) {
+    price.setCustomValidity(`Минимальная стоимость для ${OFFER_TYPES_TITLES_GENITIVE[accType]} - ${MIN_PRICES[accType]} руб.`);
   } else {
     price.setCustomValidity(``);
   }
@@ -485,7 +496,31 @@ const checkTimeChangeHandler = (activeInput) => {
 
   if (activeInput === checkOutTime) {
     checkInTime.selectedIndex = checkOutTime.selectedIndex;
+
+    return;
   }
 
   checkOutTime.selectedIndex = checkInTime.selectedIndex;
 };
+
+const avatarField = adForm.querySelector(`#avatar`);
+avatarField.addEventListener(`input`, () => {
+  if (!avatarField.files[0].type.match(`image/png`)) {
+    avatarField.setCustomValidity(`Допустимы только изображения с расширениями png, jpeg`);
+  } else {
+    avatarField.setCustomValidity(``);
+  }
+
+  avatarField.reportValidity();
+});
+
+const imagesField = adForm.querySelector(`#images`);
+imagesField.addEventListener(`input`, () => {
+  if (!imagesField.files[0].type.match(`image/png`)) {
+    imagesField.setCustomValidity(`Допустимы только изображения с расширениями png, jpeg`);
+  } else {
+    imagesField.setCustomValidity(``);
+  }
+
+  imagesField.reportValidity();
+});
