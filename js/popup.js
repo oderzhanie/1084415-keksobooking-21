@@ -22,12 +22,12 @@
     cardTitle.textContent = window.data.similarObjects[pinIndex].offer.title;
     cardAddress.textContent = window.data.similarObjects[pinIndex].offer.address;
     cardPrice.innerHTML = window.data.similarObjects[pinIndex].offer.price + `&#x20bd;<span>/ночь</span>`;
-    cardType.textContent = window.consts.OFFER_TYPES_TITLES[window.data.similarObjects[pinIndex].offer.type];
+    cardType.textContent = window.constants.OFFER_TYPES_TITLES[window.data.similarObjects[pinIndex].offer.type];
 
     cardCapacity.textContent = window.data.similarObjects[pinIndex].offer.rooms + ` комнаты для ` + window.data.similarObjects[pinIndex].offer.guests + ` гостей`;
     cardCheckTime.textContent = `Заезд после ` + window.data.similarObjects[pinIndex].offer.checkin + `, выезд до ` + window.data.similarObjects[pinIndex].offer.checkout;
 
-    for (const feature of window.consts.features) {
+    for (const feature of window.constants.features) {
       if (!window.data.similarObjects[pinIndex].offer.features.includes(feature)) {
         const featureNode = cardFeatures.querySelector(`.popup__feature--` + feature);
         featureNode.classList.add(`visually-hidden`);
