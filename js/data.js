@@ -21,14 +21,14 @@
           title: `Заголовок предложения`,
           address: ObjectLocation.x + `, ` + ObjectLocation.y,
           price: window.utils.getRandomNumber(100, 1000),
-          type: window.utils.getRandomItem(window.consts.types),
+          type: window.utils.getRandomItem(window.constants.types),
           rooms: window.utils.getRandomNumber(1, 5),
           guests: window.utils.getRandomNumber(1, 10),
-          checkin: window.utils.getRandomItem(window.consts.checkTimes),
-          checkout: window.utils.getRandomItem(window.consts.checkTimes),
-          features: window.utils.getRandomArray(window.consts.features),
+          checkin: window.utils.getRandomItem(window.constants.checkTimes),
+          checkout: window.utils.getRandomItem(window.constants.checkTimes),
+          features: window.utils.getRandomArray(window.constants.features),
           description: `Описание жилья`,
-          photos: window.utils.getRandomArray(window.consts.photos)
+          photos: window.utils.getRandomArray(window.constants.photos)
         },
         location: ObjectLocation
       });

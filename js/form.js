@@ -30,9 +30,9 @@
   titleInput.addEventListener(`input`, () => {
     let valueLength = titleInput.value.length;
 
-    if (valueLength < window.consts.MIN_TITLE_LENGTH) {
-      titleInput.setCustomValidity(`Еще ${window.consts.MIN_TITLE_LENGTH - valueLength} символов`);
-    } else if (valueLength === window.consts.MAX_TITLE_LENGTH) {
+    if (valueLength < window.constants.MIN_TITLE_LENGTH) {
+      titleInput.setCustomValidity(`Еще ${window.constants.MIN_TITLE_LENGTH - valueLength} символов`);
+    } else if (valueLength === window.constants.MAX_TITLE_LENGTH) {
       titleInput.setCustomValidity(`Заголовок должен быть не более 100 символов`);
     } else {
       titleInput.setCustomValidity(``);
@@ -54,9 +54,9 @@
     switch (selectedRooms) {
       case 1:
         if (selectedCapacity === 0) {
-          roomsNumber.setCustomValidity(window.consts.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
+          roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
         } else if (selectedCapacity > 1) {
-          roomsNumber.setCustomValidity(window.consts.CUSTOM_MESSAGES_ROOMS.fewRooms);
+          roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.fewRooms);
         } else {
           roomsNumber.setCustomValidity(``);
         }
@@ -64,9 +64,9 @@
 
       case 2:
         if (selectedCapacity === 0) {
-          roomsNumber.setCustomValidity(window.consts.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
+          roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
         } else if (selectedCapacity > 2) {
-          roomsNumber.setCustomValidity(window.consts.CUSTOM_MESSAGES_ROOMS.fewRooms);
+          roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.fewRooms);
         } else {
           roomsNumber.setCustomValidity(``);
         }
@@ -74,7 +74,7 @@
 
       case 3:
         if (selectedCapacity === 0) {
-          roomsNumber.setCustomValidity(window.consts.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
+          roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
         } else {
           roomsNumber.setCustomValidity(``);
         }
@@ -82,7 +82,7 @@
 
       case 100:
         if (selectedCapacity > 0) {
-          roomsNumber.setCustomValidity(window.consts.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
+          roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
         } else {
           roomsNumber.setCustomValidity(``);
         }
@@ -106,7 +106,7 @@
     switch (selectedCapacity) {
       case 1:
         if (selectedRooms === 100) {
-          capacity.setCustomValidity(window.consts.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
+          capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
         } else {
           capacity.setCustomValidity(``);
         }
@@ -114,9 +114,9 @@
 
       case 2:
         if (selectedRooms === 100) {
-          capacity.setCustomValidity(window.consts.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
+          capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
         } else if (selectedRooms < 2) {
-          capacity.setCustomValidity(window.consts.CUSTOM_MESSAGES_ROOMS.manyPeople);
+          capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.manyPeople);
         } else {
           capacity.setCustomValidity(``);
         }
@@ -124,9 +124,9 @@
 
       case 3:
         if (selectedRooms === 100) {
-          capacity.setCustomValidity(window.consts.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
+          capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
         } else if (selectedRooms < 3) {
-          capacity.setCustomValidity(window.consts.CUSTOM_MESSAGES_ROOMS.manyPeople);
+          capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.manyPeople);
         } else {
           capacity.setCustomValidity(``);
         }
@@ -134,7 +134,7 @@
 
       case 0:
         if (selectedRooms !== 100) {
-          capacity.setCustomValidity(window.consts.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
+          capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
         } else {
           capacity.setCustomValidity(``);
         }
@@ -155,10 +155,10 @@
     const accType = accomodationType.value;
     const priceValue = price.value;
 
-    price.placeholder = window.consts.MIN_PRICES[accType];
+    price.placeholder = window.constants.MIN_PRICES[accType];
 
-    if (priceValue < window.consts.MIN_PRICES[accType]) {
-      price.setCustomValidity(`Минимальная стоимость для ${window.consts.OFFER_TYPES_TITLES_GENITIVE[accType]} - ${window.consts.MIN_PRICES[accType]} руб.`);
+    if (priceValue < window.constants.MIN_PRICES[accType]) {
+      price.setCustomValidity(`Минимальная стоимость для ${window.constants.OFFER_TYPES_TITLES_GENITIVE[accType]} - ${window.constants.MIN_PRICES[accType]} руб.`);
     } else {
       price.setCustomValidity(``);
     }
@@ -177,10 +177,10 @@
     const priceValue = price.value;
     const accType = accomodationType.value;
 
-    if (priceValue > window.consts.MAX_PRICE) {
-      price.setCustomValidity(`Максимально допустимая стоимость - ${window.consts.MAX_PRICE} руб.`);
-    } else if (priceValue < window.consts.MIN_PRICES[accType]) {
-      price.setCustomValidity(`Минимальная стоимость для ${window.consts.OFFER_TYPES_TITLES_GENITIVE[accType]} - ${window.consts.MIN_PRICES[accType]} руб.`);
+    if (priceValue > window.constants.MAX_PRICE) {
+      price.setCustomValidity(`Максимально допустимая стоимость - ${window.constants.MAX_PRICE} руб.`);
+    } else if (priceValue < window.constants.MIN_PRICES[accType]) {
+      price.setCustomValidity(`Минимальная стоимость для ${window.constants.OFFER_TYPES_TITLES_GENITIVE[accType]} - ${window.constants.MIN_PRICES[accType]} руб.`);
     } else {
       price.setCustomValidity(``);
     }

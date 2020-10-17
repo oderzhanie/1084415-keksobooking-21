@@ -16,8 +16,8 @@
       const clonedPin = pinTemplate.cloneNode(true);
       const pinButton = clonedPin.querySelector(`button`);
       const pinImg = pinButton.querySelector(`img`);
-      const clonedPinPositionX = window.data.similarObjects[i].location.x + window.consts.PIN_WIDTH_HALF;
-      const clonedPinPositionY = window.data.similarObjects[i].location.y + window.consts.PIN_HEIGHT;
+      const clonedPinPositionX = window.data.similarObjects[i].location.x + window.constants.PIN_WIDTH_HALF;
+      const clonedPinPositionY = window.data.similarObjects[i].location.y + window.constants.PIN_HEIGHT;
       pinButton.style = `left: ` + clonedPinPositionX + `px; top: ` + clonedPinPositionY + `px;`;
       pinButton.id = window.data.similarObjects[i].id;
       pinButton.classList.add(`map__pin--object`);
