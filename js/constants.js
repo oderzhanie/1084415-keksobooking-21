@@ -3,11 +3,13 @@
 (() => {
   const INACTIVE_PIN_WIDTH_HALF = 20;
   const INACTIVE_PIN_HEIGHT_HALF = 22;
-  const PIN_WIDTH_HALF = 30;
+  const PIN_WIDTH_HALF = 32;
   const PIN_HEIGHT = 40;
   const MIN_TITLE_LENGTH = 30;
   const MAX_TITLE_LENGTH = 100;
   const MAX_PRICE = 1000000;
+
+  const pinItems = 8;
 
   const Accommodation = {
     PALACE: `palace`,
@@ -61,6 +63,7 @@
     MIN_TITLE_LENGTH,
     MAX_TITLE_LENGTH,
     MAX_PRICE,
+    pinItems,
     Accommodation,
     MIN_PRICES,
     OFFER_TYPES_TITLES,

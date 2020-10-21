@@ -1,6 +1,6 @@
 'use strict';
 
-window.data.getSimilarObjects();
+// const similarObjects = window.data.getSimilarObjects();
 
 const activatePage = () => {
   window.form.activateForm();
@@ -18,4 +18,3 @@ window.pin.mainPin.addEventListener(`keydown`, (evt) => {
     activatePage();
   }
 });
-
