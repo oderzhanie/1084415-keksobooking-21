@@ -9,7 +9,7 @@
   const MAX_TITLE_LENGTH = 100;
   const MAX_PRICE = 1000000;
 
-  const pinItems = 8;
+  const PIN_ITEMS = 5;
 
   const Accommodation = {
     PALACE: `palace`,
@@ -63,7 +63,7 @@
     MIN_TITLE_LENGTH,
     MAX_TITLE_LENGTH,
     MAX_PRICE,
-    pinItems,
+    PIN_ITEMS,
     Accommodation,
     MIN_PRICES,
     OFFER_TYPES_TITLES,

@@ -1,8 +1,6 @@
 'use strict';
 
 (() => {
-  const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
-
   const getRandomNumber = (min, max) => {
     const rand = min - 0.5 + Math.random() * (max - min + 1);
     return Math.round(rand);
@@ -42,7 +40,6 @@
   };
 
   window.utils = {
-    generateId,
     getRandomNumber,
     getRandomIndex,
     getRandomItem,

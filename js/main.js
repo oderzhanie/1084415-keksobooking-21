@@ -1,7 +1,5 @@
 'use strict';
 
-// const similarObjects = window.data.getSimilarObjects();
-
 const activatePage = () => {
   window.form.activateForm();
   window.map.activateMap();

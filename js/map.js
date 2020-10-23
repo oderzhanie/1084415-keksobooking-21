@@ -23,15 +23,16 @@
 
     const similarPinsFragment = document.createDocumentFragment();
 
-    const similarObjects = [];
+    window.data.prepareSimilarObjects();
+    const similarObjects = window.data.similarObjects;
 
     window.load.download((objects) => {
       objects.forEach((elem) => {
-        elem.id = window.utils.generateId();
+        elem.id = `${elem.location.x}${elem.location.y}`;
         similarObjects.push(elem);
       });
 
-      for (let i = 0; i < window.constants.pinItems; i++) {
+      for (let i = 0; i < window.constants.PIN_ITEMS; i++) {
         const clonedPin = pinTemplate.cloneNode(true);
         const pinButton = clonedPin.querySelector(`button`);
         const pinImg = pinButton.querySelector(`img`);
@@ -76,6 +77,5 @@
   window.map = {
     map,
     activateMap,
-    // similarObjects
   };
 })();
