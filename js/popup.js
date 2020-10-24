@@ -38,11 +38,10 @@
     cardDescription.textContent = similarObjects[pinIndex].offer.description;
 
     const photosLength = similarObjects[pinIndex].offer.photos.length;
-    if (photosLength === 0) {
-      cardPhotos.classList.add(`visually-hidden`);
-    } else {
+    if (photosLength) {
       const firstPhoto = cardPhotos.querySelector(`.popup__photo`);
       firstPhoto.src = similarObjects[pinIndex].offer.photos[0];
+
       if (photosLength > 1) {
         for (let j = 1; j < photosLength; j++) {
           const clonedPhoto = firstPhoto.cloneNode(true);
@@ -50,6 +49,8 @@
           cardPhotos.appendChild(clonedPhoto);
         }
       }
+    } else {
+      cardPhotos.classList.add(`visually-hidden`);
     }
 
     cardAvatar.src = similarObjects[pinIndex].author.avatar;

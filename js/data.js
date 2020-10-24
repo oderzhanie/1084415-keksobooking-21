@@ -2,20 +2,23 @@
 
 (() => {
   const similarObjects = [];
+  const errorHandler = window.error.errorHandler;
 
   const prepareSimilarObjects = () => {
     window.load.download((objects) => {
-      const objectsShort = objects.slice(0, window.constants.PIN_ITEMS);
 
-      objectsShort.forEach((elem) => {
+      objects.map((elem) => {
         elem.id = `${elem.location.x}${elem.location.y}`;
         similarObjects.push(elem);
       });
-    });
+
+    }, errorHandler);
   };
 
+  prepareSimilarObjects();
+
   window.data = {
-    prepareSimilarObjects,
+    // prepareSimilarObjects,
     similarObjects
   };
 })();
