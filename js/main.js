@@ -1,7 +1,5 @@
 'use strict';
 
-window.data.getSimilarObjects();
-
 const activatePage = () => {
   window.form.activateForm();
   window.map.activateMap();
@@ -18,4 +16,3 @@ window.pin.mainPin.addEventListener(`keydown`, (evt) => {
     activatePage();
   }
 });
-
