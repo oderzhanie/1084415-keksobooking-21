@@ -4,7 +4,7 @@
   const similarObjects = [];
   const errorHandler = window.error.errorHandler;
 
-  const prepareSimilarObjects = () => {
+  const prepareSimilarObjects = (cb) => {
     window.load.download((objects) => {
 
       objects.map((elem) => {
@@ -12,13 +12,12 @@
         similarObjects.push(elem);
       });
 
+      cb();
     }, errorHandler);
   };
 
-  prepareSimilarObjects();
-
   window.data = {
-    // prepareSimilarObjects,
+    prepareSimilarObjects,
     similarObjects
   };
 })();

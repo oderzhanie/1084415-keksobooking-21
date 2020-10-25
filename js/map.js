@@ -3,15 +3,11 @@
 (() => {
   const map = document.querySelector(`.map`);
 
-  const activateMap = () => {
-    map.classList.remove(`map--faded`);
-    map.classList.add(`map--active`);
+  const onObjectsReady = () => {
     const mapPins = document.querySelector(`.map__pins`);
     const pinTemplate = document.querySelector(`#pin`).content;
-
     const similarPinsFragment = document.createDocumentFragment();
 
-    // window.data.prepareSimilarObjects();
     const similarObjects = window.data.similarObjects;
 
     for (let i = 0; i < window.constants.PIN_ITEMS; i++) {
@@ -55,8 +51,14 @@
     };
   };
 
+  const activateMap = () => {
+    map.classList.remove(`map--faded`);
+    map.classList.add(`map--active`);
+    window.data.prepareSimilarObjects(onObjectsReady);
+  };
+
   window.map = {
     map,
-    activateMap,
+    activateMap
   };
 })();
