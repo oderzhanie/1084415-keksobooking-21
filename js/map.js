@@ -57,8 +57,19 @@
     window.data.prepareSimilarObjects(onObjectsReady);
   };
 
+  const deactivateMap = () => {
+    map.classList.remove(`map--active`);
+    map.classList.add(`map--faded`);
+
+    const objectPins = map.querySelectorAll(`.map__pin--object`);
+    objectPins.forEach((object) => object.remove());
+
+    // И здесь еще вернуть основной пин в центр карты.
+  };
+
   window.map = {
     map,
-    activateMap
+    activateMap,
+    deactivateMap
   };
 })();

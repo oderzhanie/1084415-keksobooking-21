@@ -7,19 +7,23 @@
   // const TIMEOUT_IN_MS = 10000;
 
   const downloadURL = `https://21.javascript.pages.academy/keksobooking/data`;
-  // const uploadURL = `https://21.javascript.pages.academy/keksobooking`;
+  const uploadURL = `https://21.javascript.pages.academy/keksobooking`;
 
-  // const upload = (data, onSuccess) => {
-  //   const xhr = new XMLHttpRequest();
-  //   xhr.responseType = `json`;
+  const upload = (data, onSuccess, onError) => {
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = `json`;
 
-  //   xhr.addEventListener(`load`, () => {
-  //     onSuccess(xhr.response);
-  //   });
+    xhr.addEventListener(`load`, () => {
+      if (xhr.status === StatusCode.OK) {
+        onSuccess();
+      } else {
+        onError();
+      }
+    });
 
-  //   xhr.open(`POST`, uploadURL);
-  //   xhr.send(data);
-  // };
+    xhr.open(`POST`, uploadURL);
+    xhr.send(data);
+  };
 
   const download = (onSuccess, onError) => {
     const xhr = new XMLHttpRequest();
@@ -40,6 +44,6 @@
 
   window.load = {
     download,
-    // upload
+    upload
   };
 })();

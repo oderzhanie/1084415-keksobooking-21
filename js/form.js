@@ -4,9 +4,17 @@
   const adForm = document.querySelector(`.ad-form`);
   const adFormFieldsets = Array.from(adForm.children);
 
-  adFormFieldsets.forEach((child) => {
-    child.setAttribute(`disabled`, ``);
-  });
+  const deactivateForm = () => {
+    adFormFieldsets.forEach((child) => {
+      child.setAttribute(`disabled`, ``);
+    });
+
+    if (!adForm.classList.contains(`ad-form--disabled`)) {
+      adForm.classList.add(`ad-form--disabled`);
+    }
+  };
+
+  deactivateForm();
 
   const addressField = adForm.querySelector(`#address`);
   addressField.setAttribute(`readonly`, ``);
@@ -18,6 +26,9 @@
     adFormFieldsets.forEach((child) => {
       child.removeAttribute(`disabled`, ``);
     });
+
+    const accType = accomodationType.value;
+    price.placeholder = window.constants.MIN_PRICES[accType];
   };
 
   const titleInput = adForm.querySelector(`#title`);
@@ -239,9 +250,29 @@
     checkImages(imagesField);
   });
 
+  const submitHandler = (evt) => {
+    evt.preventDefault();
+    window.load.upload(new FormData(adForm), window.success.uploadSuccessHandler, window.error.uploadErrorHandler);
+  };
+  adForm.addEventListener(`submit`, submitHandler);
+
+  const clearForm = () => {
+    adForm.reset();
+    addressField.setAttribute(`value`, window.pin.getPinCoords());
+
+    const accType = accomodationType.value;
+    price.placeholder = window.constants.MIN_PRICES[accType];
+  };
+
+  const clearButton = adForm.querySelector(`.ad-form__reset`);
+  clearButton.addEventListener(`click`, () => {
+    clearForm();
+  });
 
   window.form = {
     activateForm,
+    deactivateForm,
+    clearForm,
     addressField
   };
 })();
