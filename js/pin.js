@@ -2,6 +2,8 @@
 
 (() => {
   const mainPin = window.map.map.querySelector(`.map__pin--main`);
+  const INITIAL_OFFSET_LEFT = 570;
+  const INITIAL_OFFSET_TOP = 375;
 
   let getPinCoords = () => {
     const posX = mainPin.offsetLeft;
@@ -13,8 +15,14 @@
     return address;
   };
 
+  const restorePinCoords = () => {
+    mainPin.style.left = `${INITIAL_OFFSET_LEFT}px`;
+    mainPin.style.top = `${INITIAL_OFFSET_TOP}px`;
+  };
+
   window.pin = {
     getPinCoords,
+    restorePinCoords,
     mainPin
   };
 })();

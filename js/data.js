@@ -8,8 +8,10 @@
     window.load.download((objects) => {
 
       objects.map((elem) => {
-        elem.id = `${elem.location.x}${elem.location.y}`;
-        similarObjects.push(elem);
+        if (elem.offer) {
+          elem.id = `${elem.location.x}${elem.location.y}`;
+          similarObjects.push(elem);
+        }
       });
 
       cb();
