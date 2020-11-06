@@ -3,12 +3,13 @@
 (() => {
   const map = document.querySelector(`.map`);
   const filters = map.querySelectorAll(`.map__filter`);
+  const filtersForm = map.querySelector(`.map__filters`);
+
 
   filters.forEach((child) => {
     child.setAttribute(`disabled`, ``);
   });
 
-  const housingFilter = document.querySelector(`#housing-type`);
 
   const renderSimilarObjects = (objects) => {
     const objectPins = map.querySelectorAll(`.map__pin--object`);
@@ -67,7 +68,7 @@
   };
 
 
-  const getFilteredObjects = () => {
+  const getFilteredObjects = (filter) => {
     const popup = window.map.map.querySelector(`.map__card`);
     if (window.map.map.contains(popup)) {
       popup.remove();
@@ -80,18 +81,19 @@
 
     const similarObjects = window.data.similarObjects;
 
-    const indexSelectedChoice = housingFilter.selectedIndex;
-    const selectedChoice = housingFilter.options[indexSelectedChoice].value;
+    const filterChanged = filtersForm.querySelector(`#${filter}`);
+    const indexSelectedChoice = filterChanged.selectedIndex;
+    const selectedChoice = filterChanged.options[indexSelectedChoice].value;
 
     if (indexSelectedChoice === 0) {
-      window.data.prepareSimilarObjects(onObjectsReady);
-    }
+      renderSimilarObjects(similarObjects);
+    } else {
+      const filteredObjects = similarObjects.filter((obj) => {
+        return obj.offer.type === selectedChoice;
+      });
 
-    const filteredObjects = similarObjects.filter((obj) => {
-      return obj.offer.type === selectedChoice;
-    });
-    // После этой фильтрации в filteredObjects объекты добавляются дважды, с дубликатом.
-    renderSimilarObjects(filteredObjects);
+      renderSimilarObjects(filteredObjects);
+    }
   };
 
   const activateMap = () => {
@@ -103,8 +105,9 @@
       child.removeAttribute(`disabled`, ``);
     });
 
-    housingFilter.addEventListener(`change`, () => {
-      window.data.prepareSimilarObjects(getFilteredObjects);
+    filtersForm.addEventListener(`change`, (evt) => {
+      const filter = evt.target.id;
+      getFilteredObjects(filter);
     });
   };
 
