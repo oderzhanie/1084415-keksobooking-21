@@ -17,24 +17,25 @@
       objectPins.forEach((object) => object.remove());
     }
 
-
     const mapPins = document.querySelector(`.map__pins`);
     const pinTemplate = document.querySelector(`#pin`).content;
     const similarPinsFragment = document.createDocumentFragment();
 
-    for (let i = 0; i <= window.constants.PIN_ITEMS; i++) {
-      const clonedPin = pinTemplate.cloneNode(true);
-      const pinButton = clonedPin.querySelector(`button`);
-      const pinImg = pinButton.querySelector(`img`);
-      const clonedPinPositionX = objects[i].location.x + window.constants.PIN_WIDTH_HALF;
-      const clonedPinPositionY = objects[i].location.y + window.constants.PIN_HEIGHT;
-      pinButton.style = `left: ` + clonedPinPositionX + `px; top: ` + clonedPinPositionY + `px;`;
-      pinButton.id = objects[i].id;
-      pinButton.classList.add(`map__pin--object`);
-      pinImg.src = objects[i].author.avatar;
-      pinImg.alt = objects[i].offer.title;
-      similarPinsFragment.appendChild(clonedPin);
-    }
+    objects.map((object, i) => {
+      if (i <= window.constants.PIN_ITEMS) {
+        const clonedPin = pinTemplate.cloneNode(true);
+        const pinButton = clonedPin.querySelector(`button`);
+        const pinImg = pinButton.querySelector(`img`);
+        const clonedPinPositionX = object.location.x + window.constants.PIN_WIDTH_HALF;
+        const clonedPinPositionY = object.location.y + window.constants.PIN_HEIGHT;
+        pinButton.style = `left: ` + clonedPinPositionX + `px; top: ` + clonedPinPositionY + `px;`;
+        pinButton.id = object.id;
+        pinButton.classList.add(`map__pin--object`);
+        pinImg.src = object.author.avatar;
+        pinImg.alt = object.offer.title;
+        similarPinsFragment.appendChild(clonedPin);
+      }
+    });
 
     mapPins.appendChild(similarPinsFragment);
 
@@ -91,7 +92,6 @@
       const filteredObjects = similarObjects.filter((obj) => {
         return obj.offer.type === selectedChoice;
       });
-
       renderSimilarObjects(filteredObjects);
     }
   };
@@ -107,7 +107,7 @@
 
     filtersForm.addEventListener(`change`, (evt) => {
       const filter = evt.target.id;
-      getFilteredObjects(filter);
+      getFilteredObjects(filter, renderSimilarObjects);
     });
   };
 
