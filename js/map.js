@@ -21,21 +21,22 @@
     const pinTemplate = document.querySelector(`#pin`).content;
     const similarPinsFragment = document.createDocumentFragment();
 
-    objects.map((object, i) => {
+    const amountToDisplay = Math.min(window.constants.PIN_ITEMS, objects.length);
+    for (let i = 0; i < amountToDisplay; i++) {
       if (i <= window.constants.PIN_ITEMS) {
         const clonedPin = pinTemplate.cloneNode(true);
         const pinButton = clonedPin.querySelector(`button`);
         const pinImg = pinButton.querySelector(`img`);
-        const clonedPinPositionX = object.location.x + window.constants.PIN_WIDTH_HALF;
-        const clonedPinPositionY = object.location.y + window.constants.PIN_HEIGHT;
+        const clonedPinPositionX = objects[i].location.x + window.constants.PIN_WIDTH_HALF;
+        const clonedPinPositionY = objects[i].location.y + window.constants.PIN_HEIGHT;
         pinButton.style = `left: ` + clonedPinPositionX + `px; top: ` + clonedPinPositionY + `px;`;
-        pinButton.id = object.id;
+        pinButton.id = objects[i].id;
         pinButton.classList.add(`map__pin--object`);
-        pinImg.src = object.author.avatar;
-        pinImg.alt = object.offer.title;
+        pinImg.src = objects[i].author.avatar;
+        pinImg.alt = objects[i].offer.title;
         similarPinsFragment.appendChild(clonedPin);
       }
-    });
+    }
 
     mapPins.appendChild(similarPinsFragment);
 
@@ -76,22 +77,19 @@
     }
 
     const prevPins = window.map.map.querySelectorAll(`.map__pin--object`);
-    prevPins.forEach((elem) => {
-      elem.remove();
-    });
+    prevPins.forEach((elem) => elem.remove());
 
-    const similarObjects = window.data.similarObjects;
+    const {similarObjects} = window.data;
 
     const filterChanged = filtersForm.querySelector(`#${filter}`);
-    const indexSelectedChoice = filterChanged.selectedIndex;
-    const selectedChoice = filterChanged.options[indexSelectedChoice].value;
+    const {selectedIndex} = filterChanged;
+    const selectedChoice = filterChanged.options[selectedIndex].value;
 
-    if (indexSelectedChoice === 0) {
+
+    if (selectedIndex === 0) {
       renderSimilarObjects(similarObjects);
     } else {
-      const filteredObjects = similarObjects.filter((obj) => {
-        return obj.offer.type === selectedChoice;
-      });
+      const filteredObjects = similarObjects.filter((obj) => obj.offer.type === selectedChoice);
       renderSimilarObjects(filteredObjects);
     }
   };
