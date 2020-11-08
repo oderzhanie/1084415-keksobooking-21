@@ -16,3 +16,4 @@ window.pin.mainPin.addEventListener(`keydown`, (evt) => {
     activatePage();
   }
 });
+

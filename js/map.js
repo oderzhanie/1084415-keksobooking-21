@@ -2,32 +2,44 @@
 
 (() => {
   const map = document.querySelector(`.map`);
+  const filters = map.querySelectorAll(`.map__filter`);
+  const filtersForm = map.querySelector(`.map__filters`);
 
-  const onObjectsReady = () => {
+
+  filters.forEach((child) => {
+    child.setAttribute(`disabled`, ``);
+  });
+
+
+  const renderSimilarObjects = (objects) => {
+    const objectPins = map.querySelectorAll(`.map__pin--object`);
+    if (objectPins) {
+      objectPins.forEach((object) => object.remove());
+    }
+
     const mapPins = document.querySelector(`.map__pins`);
     const pinTemplate = document.querySelector(`#pin`).content;
     const similarPinsFragment = document.createDocumentFragment();
 
-    const similarObjects = window.data.similarObjects;
-
-    for (let i = 0; i < window.constants.PIN_ITEMS; i++) {
-      const clonedPin = pinTemplate.cloneNode(true);
-      const pinButton = clonedPin.querySelector(`button`);
-      const pinImg = pinButton.querySelector(`img`);
-      const clonedPinPositionX = similarObjects[i].location.x + window.constants.PIN_WIDTH_HALF;
-      const clonedPinPositionY = similarObjects[i].location.y + window.constants.PIN_HEIGHT;
-      pinButton.style = `left: ` + clonedPinPositionX + `px; top: ` + clonedPinPositionY + `px;`;
-      pinButton.id = similarObjects[i].id;
-      pinButton.classList.add(`map__pin--object`);
-      pinImg.src = similarObjects[i].author.avatar;
-      pinImg.alt = similarObjects[i].offer.title;
-      similarPinsFragment.appendChild(clonedPin);
+    const amountToDisplay = Math.min(window.constants.PIN_ITEMS, objects.length);
+    for (let i = 0; i < amountToDisplay; i++) {
+      if (i <= window.constants.PIN_ITEMS) {
+        const clonedPin = pinTemplate.cloneNode(true);
+        const pinButton = clonedPin.querySelector(`button`);
+        const pinImg = pinButton.querySelector(`img`);
+        const clonedPinPositionX = objects[i].location.x + window.constants.PIN_WIDTH_HALF;
+        const clonedPinPositionY = objects[i].location.y + window.constants.PIN_HEIGHT;
+        pinButton.style = `left: ` + clonedPinPositionX + `px; top: ` + clonedPinPositionY + `px;`;
+        pinButton.id = objects[i].id;
+        pinButton.classList.add(`map__pin--object`);
+        pinImg.src = objects[i].author.avatar;
+        pinImg.alt = objects[i].offer.title;
+        similarPinsFragment.appendChild(clonedPin);
+      }
     }
 
     mapPins.appendChild(similarPinsFragment);
-    window.form.addressField.value = window.pin.getPinCoords();
 
-    const objectPins = map.querySelectorAll(`.map__pin--object`);
     for (const pin of objectPins) {
       pin.addEventListener(`click`, () => {
         window.popup.popupRenderHandler(pin);
@@ -51,20 +63,63 @@
     };
   };
 
+  const onObjectsReady = () => {
+    const similarObjects = window.data.similarObjects;
+    renderSimilarObjects(similarObjects);
+    window.form.addressField.value = window.pin.getPinCoords();
+  };
+
+
+  const getFilteredObjects = (filter) => {
+    const popup = window.map.map.querySelector(`.map__card`);
+    if (window.map.map.contains(popup)) {
+      popup.remove();
+    }
+
+    const prevPins = window.map.map.querySelectorAll(`.map__pin--object`);
+    prevPins.forEach((elem) => elem.remove());
+
+    const {similarObjects} = window.data;
+
+    const filterChanged = filtersForm.querySelector(`#${filter}`);
+    const {selectedIndex} = filterChanged;
+    const selectedChoice = filterChanged.options[selectedIndex].value;
+
+
+    if (selectedIndex === 0) {
+      renderSimilarObjects(similarObjects);
+    } else {
+      const filteredObjects = similarObjects.filter((obj) => obj.offer.type === selectedChoice);
+      renderSimilarObjects(filteredObjects);
+    }
+  };
+
   const activateMap = () => {
     map.classList.remove(`map--faded`);
     map.classList.add(`map--active`);
     window.data.prepareSimilarObjects(onObjectsReady);
+
+    filters.forEach((child) => {
+      child.removeAttribute(`disabled`, ``);
+    });
+
+    filtersForm.addEventListener(`change`, (evt) => {
+      const filter = evt.target.id;
+      getFilteredObjects(filter, renderSimilarObjects);
+    });
   };
 
   const deactivateMap = () => {
     map.classList.remove(`map--active`);
     map.classList.add(`map--faded`);
+    filters.forEach((child) => {
+      child.setAttribute(`disabled`, ``);
+    });
 
     const objectPins = map.querySelectorAll(`.map__pin--object`);
     objectPins.forEach((object) => object.remove());
 
-    // И здесь еще вернуть основной пин в центр карты.
+    window.pin.restorePinCoords();
   };
 
   window.map = {
