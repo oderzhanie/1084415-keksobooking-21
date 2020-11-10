@@ -1,7 +1,8 @@
 'use strict';
 
 (() => {
-  const mainPin = window.map.map.querySelector(`.map__pin--main`);
+  const {map} = window.map;
+  const mainPin = map.querySelector(`.map__pin--main`);
   const INITIAL_OFFSET_LEFT = 570;
   const INITIAL_OFFSET_TOP = 375;
 
