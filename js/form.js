@@ -13,7 +13,6 @@
       adForm.classList.add(`ad-form--disabled`);
     }
   };
-
   deactivateForm();
 
   const addressField = adForm.querySelector(`#address`);
@@ -30,6 +29,26 @@
     const accType = accomodationType.value;
     price.placeholder = window.constants.MIN_PRICES[accType];
   };
+
+  const {imageUpload} = window.imageUpload;
+
+  const avatarInput = adForm.querySelector(`.ad-form-header__input`);
+  const avatarPreview = adForm.querySelector(`.ad-form-header__preview img`);
+  avatarInput.addEventListener(`change`, () => {
+    imageUpload(avatarInput, avatarPreview);
+  });
+
+  const objectInput = adForm.querySelector(`.ad-form__upload input[type=file]`);
+  const objectPreview = adForm.querySelector(`.ad-form__photo`);
+  objectInput.addEventListener(`change`, () => {
+    const objectPreviewImg = document.createElement(`img`);
+    objectPreviewImg.setAttribute(`style`, `width: 70px; height: 70px;`);
+    // objectPreviewImg.style.width = `70px`;
+    // objectPreviewImg.style.height = `70px`;
+
+    objectPreview.appendChild(objectPreviewImg);
+    imageUpload(objectInput, objectPreviewImg);
+  });
 
   const titleInput = adForm.querySelector(`#title`);
   titleInput.addEventListener(`invalid`, () => {
