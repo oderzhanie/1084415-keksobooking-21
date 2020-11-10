@@ -27,8 +27,6 @@
         case `housing-type`:
           if (selectedIndex) {
             filteredObjects = filteredObjects.filter((obj) => obj.offer.type === selectedChoice);
-          } else {
-            filteredObjects = filteredObjects.filter((obj) => obj.offer.type);
           }
           break;
 
@@ -49,24 +47,18 @@
                 filteredObjects = filteredObjects.filter((obj) => obj.offer.price > 50000);
                 break;
             }
-          } else {
-            filteredObjects = filteredObjects.filter((obj) => obj.offer.price);
           }
           break;
 
         case `housing-rooms`:
           if (selectedIndex) {
             filteredObjects = filteredObjects.filter((obj) => obj.offer.rooms === Number(selectedChoice));
-          } else {
-            filteredObjects = filteredObjects.filter((obj) => obj.offer.rooms);
           }
           break;
 
         case `housing-guests`:
           if (selectedIndex) {
             filteredObjects = filteredObjects.filter((obj) => obj.offer.guests === Number(selectedChoice));
-          } else {
-            filteredObjects = filteredObjects.filter((obj) => obj.offer.guests);
           }
           break;
       }
@@ -86,7 +78,7 @@
       }
     }
 
-    window.debounce.debounce(renderSimilarObjects(filteredObjects));
+    window.debounce.debounce(renderSimilarObjects)(filteredObjects);
   };
 
   window.filter = {

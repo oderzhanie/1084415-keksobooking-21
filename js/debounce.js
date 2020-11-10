@@ -4,7 +4,7 @@
   const DEBOUNCE_INTERVAL = 500;
 
   const debounce = (cb) => {
-    const lastTimeout = null;
+    let lastTimeout = null;
 
     return (...parameters) => {
       if (lastTimeout) {
