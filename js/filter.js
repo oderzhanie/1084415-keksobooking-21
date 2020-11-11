@@ -8,12 +8,12 @@ const filters = map.querySelectorAll(`.map__filter`);
 const filtersForm = map.querySelector(`.map__filters`);
 
 const getFilteredObjects = () => {
-  const popup = window.map.map.querySelector(`.map__card`);
-  if (window.map.map.contains(popup)) {
+  const popup = map.querySelector(`.map__card`);
+  if (map.contains(popup)) {
     popup.remove();
   }
 
-  const prevPins = window.map.map.querySelectorAll(`.map__pin--object`);
+  const prevPins = map.querySelectorAll(`.map__pin--object`);
   prevPins.forEach((elem) => elem.remove());
 
   const {similarObjects} = window.data;
