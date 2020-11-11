@@ -1,297 +1,295 @@
 'use strict';
 
-(() => {
-  const adForm = document.querySelector(`.ad-form`);
-  const adFormFieldsets = Array.from(adForm.children);
+const adForm = document.querySelector(`.ad-form`);
+const adFormFieldsets = Array.from(adForm.children);
 
-  const deactivateForm = () => {
-    adFormFieldsets.forEach((child) => {
-      child.setAttribute(`disabled`, ``);
-    });
-
-    if (!adForm.classList.contains(`ad-form--disabled`)) {
-      adForm.classList.add(`ad-form--disabled`);
-    }
-  };
-  deactivateForm();
-
-  const addressField = adForm.querySelector(`#address`);
-  addressField.setAttribute(`readonly`, ``);
-  addressField.value = window.pin.getPinCoords();
-
-  const activateForm = () => {
-    adForm.classList.remove(`ad-form--disabled`);
-
-    adFormFieldsets.forEach((child) => {
-      child.removeAttribute(`disabled`, ``);
-    });
-
-    const accType = accomodationType.value;
-    price.placeholder = window.constants.MIN_PRICES[accType];
-  };
-
-  const {imageUpload} = window.imageUpload;
-
-  const avatarInput = adForm.querySelector(`.ad-form-header__input`);
-  const avatarPreview = adForm.querySelector(`.ad-form-header__preview img`);
-  avatarInput.addEventListener(`change`, () => {
-    imageUpload(avatarInput, avatarPreview);
+const deactivateForm = () => {
+  adFormFieldsets.forEach((child) => {
+    child.setAttribute(`disabled`, ``);
   });
 
-  const objectInput = adForm.querySelector(`.ad-form__upload input[type=file]`);
-  const objectPreview = adForm.querySelector(`.ad-form__photo`);
-  objectInput.addEventListener(`change`, () => {
-    const objectPreviewImg = document.createElement(`img`);
-    objectPreviewImg.setAttribute(`style`, `width: 70px; height: 70px;`);
-    // objectPreviewImg.style.width = `70px`;
-    // objectPreviewImg.style.height = `70px`;
+  if (!adForm.classList.contains(`ad-form--disabled`)) {
+    adForm.classList.add(`ad-form--disabled`);
+  }
+};
+deactivateForm();
 
-    objectPreview.appendChild(objectPreviewImg);
-    imageUpload(objectInput, objectPreviewImg);
+const addressField = adForm.querySelector(`#address`);
+addressField.setAttribute(`readonly`, ``);
+addressField.value = window.pin.getPinCoords();
+
+const activateForm = () => {
+  adForm.classList.remove(`ad-form--disabled`);
+
+  adFormFieldsets.forEach((child) => {
+    child.removeAttribute(`disabled`, ``);
   });
 
-  const titleInput = adForm.querySelector(`#title`);
-  titleInput.addEventListener(`invalid`, () => {
-    if (titleInput.validity.valueMissing) {
-      titleInput.setCustomValidity(`Обязательное поле`);
-    }
-  });
+  const accType = accomodationType.value;
+  price.placeholder = window.constants.MIN_PRICES[accType];
+};
 
-  titleInput.addEventListener(`input`, () => {
-    let valueLength = titleInput.value.length;
+const {imageUpload} = window.imageUpload;
 
-    if (valueLength < window.constants.MIN_TITLE_LENGTH) {
-      titleInput.setCustomValidity(`Еще ${window.constants.MIN_TITLE_LENGTH - valueLength} символов`);
-    } else if (valueLength === window.constants.MAX_TITLE_LENGTH) {
-      titleInput.setCustomValidity(`Заголовок должен быть не более 100 символов`);
-    } else {
-      titleInput.setCustomValidity(``);
-    }
+const avatarInput = adForm.querySelector(`.ad-form-header__input`);
+const avatarPreview = adForm.querySelector(`.ad-form-header__preview img`);
+avatarInput.addEventListener(`change`, () => {
+  imageUpload(avatarInput, avatarPreview);
+});
 
-    titleInput.reportValidity();
-  });
+const objectInput = adForm.querySelector(`.ad-form__upload input[type=file]`);
+const objectPreview = adForm.querySelector(`.ad-form__photo`);
+const objectPreviewImg = document.createElement(`img`);
 
-  const roomsNumber = adForm.querySelector(`#room_number`);
-  const capacity = adForm.querySelector(`#capacity`);
+objectInput.addEventListener(`change`, () => {
+  objectPreviewImg.setAttribute(`style`, `width: 70px; height: 70px;`);
+  objectPreview.appendChild(objectPreviewImg);
+  imageUpload(objectInput, objectPreviewImg);
+});
 
-  const roomsChangeHandler = () => {
-    const indexSelectedRooms = roomsNumber.selectedIndex;
-    const indexSelectedCapacity = capacity.selectedIndex;
+const titleInput = adForm.querySelector(`#title`);
+titleInput.addEventListener(`invalid`, () => {
+  if (titleInput.validity.valueMissing) {
+    titleInput.setCustomValidity(`Обязательное поле`);
+  }
+});
 
-    const selectedRooms = Number(roomsNumber.options[indexSelectedRooms].value);
-    const selectedCapacity = Number(capacity.options[indexSelectedCapacity].value);
+titleInput.addEventListener(`input`, () => {
+  let valueLength = titleInput.value.length;
 
-    switch (selectedRooms) {
-      case 1:
-        if (selectedCapacity === 0) {
-          roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
-        } else if (selectedCapacity > 1) {
-          roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.fewRooms);
-        } else {
-          roomsNumber.setCustomValidity(``);
-        }
-        break;
+  if (valueLength < window.constants.MIN_TITLE_LENGTH) {
+    titleInput.setCustomValidity(`Еще ${window.constants.MIN_TITLE_LENGTH - valueLength} символов`);
+  } else if (valueLength === window.constants.MAX_TITLE_LENGTH) {
+    titleInput.setCustomValidity(`Заголовок должен быть не более 100 символов`);
+  } else {
+    titleInput.setCustomValidity(``);
+  }
 
-      case 2:
-        if (selectedCapacity === 0) {
-          roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
-        } else if (selectedCapacity > 2) {
-          roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.fewRooms);
-        } else {
-          roomsNumber.setCustomValidity(``);
-        }
-        break;
+  titleInput.reportValidity();
+});
 
-      case 3:
-        if (selectedCapacity === 0) {
-          roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
-        } else {
-          roomsNumber.setCustomValidity(``);
-        }
-        break;
+const roomsNumber = adForm.querySelector(`#room_number`);
+const capacity = adForm.querySelector(`#capacity`);
 
-      case 100:
-        if (selectedCapacity > 0) {
-          roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
-        } else {
-          roomsNumber.setCustomValidity(``);
-        }
-        break;
-    }
+const roomsChangeHandler = () => {
+  const indexSelectedRooms = roomsNumber.selectedIndex;
+  const indexSelectedCapacity = capacity.selectedIndex;
 
-    roomsNumber.reportValidity();
-  };
+  const selectedRooms = Number(roomsNumber.options[indexSelectedRooms].value);
+  const selectedCapacity = Number(capacity.options[indexSelectedCapacity].value);
 
-  roomsNumber.addEventListener(`change`, () => {
-    roomsChangeHandler();
-  });
+  switch (selectedRooms) {
+    case 1:
+      if (selectedCapacity === 0) {
+        roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
+      } else if (selectedCapacity > 1) {
+        roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.fewRooms);
+      } else {
+        roomsNumber.setCustomValidity(``);
+      }
+      break;
 
-  const capacityChangeHandler = () => {
-    const indexSelectedRooms = roomsNumber.selectedIndex;
-    const indexSelectedCapacity = capacity.selectedIndex;
+    case 2:
+      if (selectedCapacity === 0) {
+        roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
+      } else if (selectedCapacity > 2) {
+        roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.fewRooms);
+      } else {
+        roomsNumber.setCustomValidity(``);
+      }
+      break;
 
-    const selectedRooms = Number(roomsNumber.options[indexSelectedRooms].value);
-    const selectedCapacity = Number(capacity.options[indexSelectedCapacity].value);
+    case 3:
+      if (selectedCapacity === 0) {
+        roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
+      } else {
+        roomsNumber.setCustomValidity(``);
+      }
+      break;
 
-    switch (selectedCapacity) {
-      case 1:
-        if (selectedRooms === 100) {
-          capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
-        } else {
-          capacity.setCustomValidity(``);
-        }
-        break;
+    case 100:
+      if (selectedCapacity > 0) {
+        roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
+      } else {
+        roomsNumber.setCustomValidity(``);
+      }
+      break;
+  }
 
-      case 2:
-        if (selectedRooms === 100) {
-          capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
-        } else if (selectedRooms < 2) {
-          capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.manyPeople);
-        } else {
-          capacity.setCustomValidity(``);
-        }
-        break;
+  roomsNumber.reportValidity();
+};
 
-      case 3:
-        if (selectedRooms === 100) {
-          capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
-        } else if (selectedRooms < 3) {
-          capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.manyPeople);
-        } else {
-          capacity.setCustomValidity(``);
-        }
-        break;
+roomsNumber.addEventListener(`change`, () => {
+  roomsChangeHandler();
+});
 
-      case 0:
-        if (selectedRooms !== 100) {
-          capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
-        } else {
-          capacity.setCustomValidity(``);
-        }
-        break;
-    }
+const capacityChangeHandler = () => {
+  const indexSelectedRooms = roomsNumber.selectedIndex;
+  const indexSelectedCapacity = capacity.selectedIndex;
 
-    capacity.reportValidity();
-  };
+  const selectedRooms = Number(roomsNumber.options[indexSelectedRooms].value);
+  const selectedCapacity = Number(capacity.options[indexSelectedCapacity].value);
 
-  capacity.addEventListener(`change`, () => {
-    capacityChangeHandler();
-  });
+  switch (selectedCapacity) {
+    case 1:
+      if (selectedRooms === 100) {
+        capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
+      } else {
+        capacity.setCustomValidity(``);
+      }
+      break;
 
-  const price = adForm.querySelector(`#price`);
-  const accomodationType = adForm.querySelector(`#type`);
+    case 2:
+      if (selectedRooms === 100) {
+        capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
+      } else if (selectedRooms < 2) {
+        capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.manyPeople);
+      } else {
+        capacity.setCustomValidity(``);
+      }
+      break;
 
-  const accomodationTypeChangeHandler = () => {
-    const accType = accomodationType.value;
-    const priceValue = price.value;
+    case 3:
+      if (selectedRooms === 100) {
+        capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
+      } else if (selectedRooms < 3) {
+        capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.manyPeople);
+      } else {
+        capacity.setCustomValidity(``);
+      }
+      break;
 
-    price.placeholder = window.constants.MIN_PRICES[accType];
+    case 0:
+      if (selectedRooms !== 100) {
+        capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
+      } else {
+        capacity.setCustomValidity(``);
+      }
+      break;
+  }
 
-    if (priceValue < window.constants.MIN_PRICES[accType]) {
-      price.setCustomValidity(`Минимальная стоимость для ${window.constants.OFFER_TYPES_TITLES_GENITIVE[accType]} - ${window.constants.MIN_PRICES[accType]} руб.`);
-    } else {
-      price.setCustomValidity(``);
-    }
-    price.reportValidity();
-  };
+  capacity.reportValidity();
+};
 
-  accomodationType.addEventListener(`change`, accomodationTypeChangeHandler);
+capacity.addEventListener(`change`, () => {
+  capacityChangeHandler();
+});
 
-  price.addEventListener(`invalid`, () => {
-    if (price.validity.valueMissing) {
-      price.setCustomValidity(`Обязательное поле`);
-    }
-  });
+const price = adForm.querySelector(`#price`);
+const accomodationType = adForm.querySelector(`#type`);
 
-  price.addEventListener(`input`, () => {
-    const priceValue = price.value;
-    const accType = accomodationType.value;
+const accomodationTypeChangeHandler = () => {
+  const accType = accomodationType.value;
+  const priceValue = price.value;
 
-    if (priceValue > window.constants.MAX_PRICE) {
-      price.setCustomValidity(`Максимально допустимая стоимость - ${window.constants.MAX_PRICE} руб.`);
-    } else if (priceValue < window.constants.MIN_PRICES[accType]) {
-      price.setCustomValidity(`Минимальная стоимость для ${window.constants.OFFER_TYPES_TITLES_GENITIVE[accType]} - ${window.constants.MIN_PRICES[accType]} руб.`);
-    } else {
-      price.setCustomValidity(``);
-    }
+  price.placeholder = window.constants.MIN_PRICES[accType];
 
-    price.reportValidity();
-  });
+  if (priceValue < window.constants.MIN_PRICES[accType]) {
+    price.setCustomValidity(`Минимальная стоимость для ${window.constants.OFFER_TYPES_TITLES_GENITIVE[accType]} - ${window.constants.MIN_PRICES[accType]} руб.`);
+  } else {
+    price.setCustomValidity(``);
+  }
+  price.reportValidity();
+};
 
-  const checkInTime = adForm.querySelector(`#timein`);
-  const checkOutTime = adForm.querySelector(`#timeout`);
+accomodationType.addEventListener(`change`, accomodationTypeChangeHandler);
 
-  checkInTime.addEventListener(`change`, () => {
-    checkTimeChangeHandler(checkInTime);
-  });
+price.addEventListener(`invalid`, () => {
+  if (price.validity.valueMissing) {
+    price.setCustomValidity(`Обязательное поле`);
+  }
+});
 
-  checkOutTime.addEventListener(`change`, () => {
-    checkTimeChangeHandler(checkOutTime);
-  });
+price.addEventListener(`input`, () => {
+  const priceValue = price.value;
+  const accType = accomodationType.value;
 
-  const checkTimeChangeHandler = (activeInput) => {
-    const indexSelectedCheckIn = checkInTime.selectedIndex;
-    const indexSelectedCheckOut = checkOutTime.selectedIndex;
+  if (priceValue > window.constants.MAX_PRICE) {
+    price.setCustomValidity(`Максимально допустимая стоимость - ${window.constants.MAX_PRICE} руб.`);
+  } else if (priceValue < window.constants.MIN_PRICES[accType]) {
+    price.setCustomValidity(`Минимальная стоимость для ${window.constants.OFFER_TYPES_TITLES_GENITIVE[accType]} - ${window.constants.MIN_PRICES[accType]} руб.`);
+  } else {
+    price.setCustomValidity(``);
+  }
 
-    let selectedCheckIn = checkInTime.options[indexSelectedCheckIn].value;
-    let selectedCheckOut = checkOutTime.options[indexSelectedCheckOut].value;
+  price.reportValidity();
+});
 
-    if (selectedCheckIn === selectedCheckOut) {
-      return;
-    }
+const checkInTime = adForm.querySelector(`#timein`);
+const checkOutTime = adForm.querySelector(`#timeout`);
 
-    if (activeInput === checkOutTime) {
-      checkInTime.selectedIndex = checkOutTime.selectedIndex;
+checkInTime.addEventListener(`change`, () => {
+  checkTimeChangeHandler(checkInTime);
+});
 
-      return;
-    }
+checkOutTime.addEventListener(`change`, () => {
+  checkTimeChangeHandler(checkOutTime);
+});
 
-    checkOutTime.selectedIndex = checkInTime.selectedIndex;
-  };
+const checkTimeChangeHandler = (activeInput) => {
+  const indexSelectedCheckIn = checkInTime.selectedIndex;
+  const indexSelectedCheckOut = checkOutTime.selectedIndex;
 
-  const checkImages = (imgInput) => {
-    if (imgInput.files[0].type.match(`image/png`) || imgInput.files[0].type.match(`image/jpeg`)) {
-      imgInput.setCustomValidity(``);
-    } else {
-      imgInput.setCustomValidity(`Допустимы только изображения с расширениями png, jpeg`);
-    }
+  let selectedCheckIn = checkInTime.options[indexSelectedCheckIn].value;
+  let selectedCheckOut = checkOutTime.options[indexSelectedCheckOut].value;
 
-    imgInput.reportValidity();
-  };
+  if (selectedCheckIn === selectedCheckOut) {
+    return;
+  }
 
-  const avatarField = adForm.querySelector(`#avatar`);
-  avatarField.addEventListener(`input`, () => {
-    checkImages(avatarField);
-  });
+  if (activeInput === checkOutTime) {
+    checkInTime.selectedIndex = checkOutTime.selectedIndex;
 
-  const imagesField = adForm.querySelector(`#images`);
-  imagesField.addEventListener(`input`, () => {
-    checkImages(imagesField);
-  });
+    return;
+  }
 
-  const submitHandler = (evt) => {
-    evt.preventDefault();
-    window.load.upload(new FormData(adForm), window.success.uploadSuccessHandler, window.error.uploadErrorHandler);
-  };
-  adForm.addEventListener(`submit`, submitHandler);
+  checkOutTime.selectedIndex = checkInTime.selectedIndex;
+};
 
-  const clearForm = () => {
-    adForm.reset();
-    addressField.setAttribute(`value`, window.pin.getPinCoords());
+const checkImages = (imgInput) => {
+  if (imgInput.files[0].type.match(`image/png`) || imgInput.files[0].type.match(`image/jpeg`)) {
+    imgInput.setCustomValidity(``);
+  } else {
+    imgInput.setCustomValidity(`Допустимы только изображения с расширениями png, jpeg`);
+  }
 
-    const accType = accomodationType.value;
-    price.placeholder = window.constants.MIN_PRICES[accType];
-  };
+  imgInput.reportValidity();
+};
 
-  const clearButton = adForm.querySelector(`.ad-form__reset`);
-  clearButton.addEventListener(`click`, () => {
-    clearForm();
-  });
+const avatarField = adForm.querySelector(`#avatar`);
+avatarField.addEventListener(`input`, () => {
+  checkImages(avatarField);
+});
 
-  window.form = {
-    activateForm,
-    deactivateForm,
-    clearForm,
-    addressField
-  };
-})();
+const imagesField = adForm.querySelector(`#images`);
+imagesField.addEventListener(`input`, () => {
+  checkImages(imagesField);
+});
+
+const submitHandler = (evt) => {
+  evt.preventDefault();
+  window.load.upload(new FormData(adForm), window.success.uploadSuccessHandler, window.error.uploadErrorHandler);
+};
+adForm.addEventListener(`submit`, submitHandler);
+
+const clearForm = () => {
+  adForm.reset();
+  objectPreview.removeChild(objectPreviewImg);
+  avatarPreview.src = `img/muffin-grey.svg`;
+  addressField.setAttribute(`value`, window.pin.getPinCoords());
+
+  const accType = accomodationType.value;
+  price.placeholder = window.constants.MIN_PRICES[accType];
+};
+
+const clearButton = adForm.querySelector(`.ad-form__reset`);
+clearButton.addEventListener(`click`, () => {
+  clearForm();
+});
+
+window.form = {
+  activateForm,
+  deactivateForm,
+  clearForm,
+  addressField
+};

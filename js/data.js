@@ -1,25 +1,23 @@
 'use strict';
 
-(() => {
-  const similarObjects = [];
-  const errorHandler = window.error.errorHandler;
+const similarObjects = [];
+const errorHandler = window.error.errorHandler;
 
-  const prepareSimilarObjects = (cb) => {
-    window.load.download((objects) => {
+const prepareSimilarObjects = (cb) => {
+  window.load.download((objects) => {
 
-      objects.map((elem) => {
-        if (elem.offer) {
-          elem.id = `${elem.location.x}${elem.location.y}`;
-          similarObjects.push(elem);
-        }
-      });
+    objects.map((elem) => {
+      if (elem.offer) {
+        elem.id = `${elem.location.x}${elem.location.y}`;
+        similarObjects.push(elem);
+      }
+    });
 
-      cb();
-    }, errorHandler);
-  };
+    cb();
+  }, errorHandler);
+};
 
-  window.data = {
-    prepareSimilarObjects,
-    similarObjects
-  };
-})();
+window.data = {
+  prepareSimilarObjects,
+  similarObjects
+};
