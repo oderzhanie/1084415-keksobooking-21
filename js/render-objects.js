@@ -14,19 +14,17 @@ const renderSimilarObjects = (objects) => {
 
   const amountToDisplay = Math.min(window.constants.PIN_ITEMS, objects.length);
   for (let i = 0; i < amountToDisplay; i++) {
-    if (i <= window.constants.PIN_ITEMS) {
-      const clonedPin = pinTemplate.cloneNode(true);
-      const pinButton = clonedPin.querySelector(`button`);
-      const pinImg = pinButton.querySelector(`img`);
-      const clonedPinPositionX = objects[i].location.x + window.constants.PIN_WIDTH_HALF;
-      const clonedPinPositionY = objects[i].location.y + window.constants.PIN_HEIGHT;
-      pinButton.style = `left: ` + clonedPinPositionX + `px; top: ` + clonedPinPositionY + `px;`;
-      pinButton.id = objects[i].id;
-      pinButton.classList.add(`map__pin--object`);
-      pinImg.src = objects[i].author.avatar;
-      pinImg.alt = objects[i].offer.title;
-      similarPinsFragment.appendChild(clonedPin);
-    }
+    const clonedPin = pinTemplate.cloneNode(true);
+    const pinButton = clonedPin.querySelector(`button`);
+    const pinImg = pinButton.querySelector(`img`);
+    const clonedPinPositionX = objects[i].location.x + window.constants.PIN_WIDTH_HALF;
+    const clonedPinPositionY = objects[i].location.y + window.constants.PIN_HEIGHT;
+    pinButton.style = `left: ` + clonedPinPositionX + `px; top: ` + clonedPinPositionY + `px;`;
+    pinButton.id = objects[i].id;
+    pinButton.classList.add(`map__pin--object`);
+    pinImg.src = objects[i].author.avatar;
+    pinImg.alt = objects[i].offer.title;
+    similarPinsFragment.appendChild(clonedPin);
   }
 
   mapPins.appendChild(similarPinsFragment);

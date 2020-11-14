@@ -16,7 +16,7 @@ mainPin.addEventListener(`mousedown`, (evt) => {
   const mouseMoveHandler = (moveEvt) => {
     moveEvt.preventDefault();
 
-    const map = window.map.map;
+    const {map} = window.map;
 
     const shift = {
       x: startCoords.x - moveEvt.clientX,

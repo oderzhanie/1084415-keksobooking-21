@@ -3,7 +3,6 @@ const path = require("path");
 module.exports = {
   entry: [
     "./js/constants.js",
-    "./js/utils.js",
     "./js/load.js",
     "./js/error.js",
     "./js/success.js",

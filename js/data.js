@@ -1,7 +1,7 @@
 'use strict';
 
 const similarObjects = [];
-const errorHandler = window.error.errorHandler;
+const {errorHandler} = window.error;
 
 const prepareSimilarObjects = (cb) => {
   window.load.download((objects) => {

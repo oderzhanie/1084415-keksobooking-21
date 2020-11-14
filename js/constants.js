@@ -44,15 +44,6 @@ const CUSTOM_MESSAGES_ROOMS = {
   nonResidentialGuests: `Не для гостей можно выбрать только вариант "100 комнат"`
 };
 
-const types = [`palace`, `flat`, `house`, `boungalo`];
-const checkTimes = [`12:00`, `13:00`, `14:00`];
-const features = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
-const photos = [
-  `http://o0.github.io/assets/images/tokyo/hotel1.jpg`,
-  `http://o0.github.io/assets/images/tokyo/hotel2.jpg`,
-  `http://o0.github.io/assets/images/tokyo/hotel3.jpg`
-];
-
 const FILTER_PRICES = {
   LOW: 10000,
   MIDDLE: 50000
@@ -73,10 +64,6 @@ window.constants = {
   OFFER_TYPES_TITLES,
   OFFER_TYPES_TITLES_GENITIVE,
   CUSTOM_MESSAGES_ROOMS,
-  types,
-  checkTimes,
-  features,
-  photos,
   FILTER_PRICES
 };
 
