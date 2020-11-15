@@ -3,7 +3,7 @@
 const createPopupTemplate = (pin) => {
   const cardTemplate = document.querySelector(`#card`).content;
   const cardFragment = document.createDocumentFragment();
-  const similarObjects = window.data.similarObjects;
+  const {similarObjects} = window.data;
 
   const pinIndex = similarObjects.findIndex((element) => element.id === pin.id);
 

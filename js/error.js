@@ -29,7 +29,7 @@ const uploadErrorHandler = () => {
 
   const errorMessageContainer = mainSection.querySelector(`.error`);
   const errorMessage = errorMessageContainer.querySelector(`.error__message`);
-  const closeErrorButton = errorMessage.querySelector(`.error__button`);
+  const closeErrorButton = errorMessageContainer.querySelector(`.error__button`);
 
   const errorCloseHandler = (evt) => {
     if (evt.key === `Escape`) {

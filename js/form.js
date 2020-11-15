@@ -2,6 +2,22 @@
 
 const adForm = document.querySelector(`.ad-form`);
 const adFormFieldsets = Array.from(adForm.children);
+const addressField = adForm.querySelector(`#address`);
+const {imageUpload} = window.imageUpload;
+const avatarInput = adForm.querySelector(`.ad-form-header__input`);
+const avatarPreview = adForm.querySelector(`.ad-form-header__preview img`);
+const objectInput = adForm.querySelector(`.ad-form__upload input[type=file]`);
+const objectPreview = adForm.querySelector(`.ad-form__photo`);
+const objectPreviewImg = document.createElement(`img`);
+const titleInput = adForm.querySelector(`#title`);
+const roomsNumber = adForm.querySelector(`#room_number`);
+const capacity = adForm.querySelector(`#capacity`);
+const price = adForm.querySelector(`#price`);
+const accomodationType = adForm.querySelector(`#type`);
+const checkInTime = adForm.querySelector(`#timein`);
+const checkOutTime = adForm.querySelector(`#timeout`);
+const avatarField = adForm.querySelector(`#avatar`);
+const imagesField = adForm.querySelector(`#images`);
 
 const deactivateForm = () => {
   adFormFieldsets.forEach((child) => {
@@ -14,7 +30,6 @@ const deactivateForm = () => {
 };
 deactivateForm();
 
-const addressField = adForm.querySelector(`#address`);
 addressField.setAttribute(`readonly`, ``);
 addressField.value = window.pin.getPinCoords();
 
@@ -22,24 +37,16 @@ const activateForm = () => {
   adForm.classList.remove(`ad-form--disabled`);
 
   adFormFieldsets.forEach((child) => {
-    child.removeAttribute(`disabled`, ``);
+    child.removeAttribute(`disabled`);
   });
 
   const accType = accomodationType.value;
   price.placeholder = window.constants.MIN_PRICES[accType];
 };
 
-const {imageUpload} = window.imageUpload;
-
-const avatarInput = adForm.querySelector(`.ad-form-header__input`);
-const avatarPreview = adForm.querySelector(`.ad-form-header__preview img`);
 avatarInput.addEventListener(`change`, () => {
   imageUpload(avatarInput, avatarPreview);
 });
-
-const objectInput = adForm.querySelector(`.ad-form__upload input[type=file]`);
-const objectPreview = adForm.querySelector(`.ad-form__photo`);
-const objectPreviewImg = document.createElement(`img`);
 
 objectInput.addEventListener(`change`, () => {
   objectPreviewImg.setAttribute(`style`, `width: 70px; height: 70px;`);
@@ -47,7 +54,6 @@ objectInput.addEventListener(`change`, () => {
   imageUpload(objectInput, objectPreviewImg);
 });
 
-const titleInput = adForm.querySelector(`#title`);
 titleInput.addEventListener(`invalid`, () => {
   if (titleInput.validity.valueMissing) {
     titleInput.setCustomValidity(`Обязательное поле`);
@@ -67,9 +73,6 @@ titleInput.addEventListener(`input`, () => {
 
   titleInput.reportValidity();
 });
-
-const roomsNumber = adForm.querySelector(`#room_number`);
-const capacity = adForm.querySelector(`#capacity`);
 
 const roomsChangeHandler = () => {
   const indexSelectedRooms = roomsNumber.selectedIndex;
@@ -108,10 +111,13 @@ const roomsChangeHandler = () => {
       break;
 
     case 100:
-      if (selectedCapacity > 0) {
-        roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
-      } else {
+      if (selectedCapacity === 0) {
         roomsNumber.setCustomValidity(``);
+        capacity.setCustomValidity(``);
+        // roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
+      } else {
+        // roomsNumber.setCustomValidity(``);
+        roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
       }
       break;
   }
@@ -160,10 +166,11 @@ const capacityChangeHandler = () => {
       break;
 
     case 0:
-      if (selectedRooms !== 100) {
-        capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
-      } else {
+      if (selectedRooms === 100) {
         capacity.setCustomValidity(``);
+        roomsNumber.setCustomValidity(``);
+      } else {
+        capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
       }
       break;
   }
@@ -174,9 +181,6 @@ const capacityChangeHandler = () => {
 capacity.addEventListener(`change`, () => {
   capacityChangeHandler();
 });
-
-const price = adForm.querySelector(`#price`);
-const accomodationType = adForm.querySelector(`#type`);
 
 const accomodationTypeChangeHandler = () => {
   const accType = accomodationType.value;
@@ -214,9 +218,6 @@ price.addEventListener(`input`, () => {
 
   price.reportValidity();
 });
-
-const checkInTime = adForm.querySelector(`#timein`);
-const checkOutTime = adForm.querySelector(`#timeout`);
 
 checkInTime.addEventListener(`change`, () => {
   checkTimeChangeHandler(checkInTime);
@@ -256,12 +257,10 @@ const checkImages = (imgInput) => {
   imgInput.reportValidity();
 };
 
-const avatarField = adForm.querySelector(`#avatar`);
 avatarField.addEventListener(`input`, () => {
   checkImages(avatarField);
 });
 
-const imagesField = adForm.querySelector(`#images`);
 imagesField.addEventListener(`input`, () => {
   checkImages(imagesField);
 });
@@ -274,7 +273,9 @@ adForm.addEventListener(`submit`, submitHandler);
 
 const clearForm = () => {
   adForm.reset();
-  objectPreview.removeChild(objectPreviewImg);
+  if (objectPreview.hasChildNodes()) {
+    objectPreview.removeChild(objectPreviewImg);
+  }
   avatarPreview.src = `img/muffin-grey.svg`;
   addressField.setAttribute(`value`, window.pin.getPinCoords());
 

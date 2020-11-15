@@ -9,7 +9,7 @@ filters.forEach((child) => {
 });
 
 const onObjectsReady = () => {
-  const similarObjects = window.data.similarObjects;
+  const {similarObjects} = window.data;
   renderSimilarObjects(similarObjects);
   window.form.addressField.value = window.pin.getPinCoords();
 };
@@ -20,7 +20,7 @@ const activateMap = () => {
   window.data.prepareSimilarObjects(onObjectsReady);
 
   filters.forEach((child) => {
-    child.removeAttribute(`disabled`, ``);
+    child.removeAttribute(`disabled`);
   });
 
   filtersForm.addEventListener(`change`, getFilteredObjects);
@@ -32,7 +32,7 @@ const activateMap = () => {
         if (!elem.checked) {
           elem.setAttribute(`checked`, `checked`);
         } else {
-          elem.removeAttribute(`checked`, `checked`);
+          elem.removeAttribute(`checked`);
         }
 
         getFilteredObjects();

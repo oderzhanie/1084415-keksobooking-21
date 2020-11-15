@@ -49,6 +49,7 @@ const FILTER_PRICES = {
   MIDDLE: 50000
 };
 
+const features = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 
 window.constants = {
   INACTIVE_PIN_WIDTH_HALF,
@@ -64,6 +65,7 @@ window.constants = {
   OFFER_TYPES_TITLES,
   OFFER_TYPES_TITLES_GENITIVE,
   CUSTOM_MESSAGES_ROOMS,
-  FILTER_PRICES
+  FILTER_PRICES,
+  features
 };
 
