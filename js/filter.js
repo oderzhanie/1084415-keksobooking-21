@@ -2,7 +2,7 @@
 
 const map = document.querySelector(`.map`);
 
-const {/* PIN_ITEMS, */ FILTER_PRICES} = window.constants;
+const {FILTER_PRICES} = window.constants;
 const {renderSimilarObjects} = window.renderObjects;
 const filters = map.querySelectorAll(`.map__filter`);
 const filtersForm = map.querySelector(`.map__filters`);
