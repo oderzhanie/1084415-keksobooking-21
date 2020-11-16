@@ -18,6 +18,9 @@ const checkInTime = adForm.querySelector(`#timein`);
 const checkOutTime = adForm.querySelector(`#timeout`);
 const avatarField = adForm.querySelector(`#avatar`);
 const imagesField = adForm.querySelector(`#images`);
+const clearButton = adForm.querySelector(`.ad-form__reset`);
+const {deactivatePage} = window.success;
+const {ROOMS_NUMBER, GUESTS_NUMBER} = window.constants;
 
 const deactivateForm = () => {
   adFormFieldsets.forEach((child) => {
@@ -82,41 +85,39 @@ const roomsChangeHandler = () => {
   const selectedCapacity = Number(capacity.options[indexSelectedCapacity].value);
 
   switch (selectedRooms) {
-    case 1:
-      if (selectedCapacity === 0) {
+    case ROOMS_NUMBER.ONE_ROOM:
+      if (selectedCapacity === GUESTS_NUMBER.NO_GUESTS) {
         roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
-      } else if (selectedCapacity > 1) {
+      } else if (selectedCapacity > GUESTS_NUMBER.ONE_GUEST) {
         roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.fewRooms);
       } else {
         roomsNumber.setCustomValidity(``);
       }
       break;
 
-    case 2:
-      if (selectedCapacity === 0) {
+    case ROOMS_NUMBER.TWO_ROOMS:
+      if (selectedCapacity === GUESTS_NUMBER.NO_GUESTS) {
         roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
-      } else if (selectedCapacity > 2) {
+      } else if (selectedCapacity > GUESTS_NUMBER.TWO_GUESTS) {
         roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.fewRooms);
       } else {
         roomsNumber.setCustomValidity(``);
       }
       break;
 
-    case 3:
-      if (selectedCapacity === 0) {
+    case ROOMS_NUMBER.THREE_ROOMS:
+      if (selectedCapacity === GUESTS_NUMBER.NO_GUESTS) {
         roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialGuests);
       } else {
         roomsNumber.setCustomValidity(``);
       }
       break;
 
-    case 100:
-      if (selectedCapacity === 0) {
+    case ROOMS_NUMBER.NON_RESIDENTIAL:
+      if (selectedCapacity === GUESTS_NUMBER.NO_GUESTS) {
         roomsNumber.setCustomValidity(``);
         capacity.setCustomValidity(``);
-        // roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
       } else {
-        // roomsNumber.setCustomValidity(``);
         roomsNumber.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
       }
       break;
@@ -137,36 +138,36 @@ const capacityChangeHandler = () => {
   const selectedCapacity = Number(capacity.options[indexSelectedCapacity].value);
 
   switch (selectedCapacity) {
-    case 1:
-      if (selectedRooms === 100) {
+    case GUESTS_NUMBER.ONE_GUEST:
+      if (selectedRooms === ROOMS_NUMBER.NON_RESIDENTIAL) {
         capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
       } else {
         capacity.setCustomValidity(``);
       }
       break;
 
-    case 2:
-      if (selectedRooms === 100) {
+    case GUESTS_NUMBER.TWO_GUESTS:
+      if (selectedRooms === ROOMS_NUMBER.NON_RESIDENTIAL) {
         capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
-      } else if (selectedRooms < 2) {
+      } else if (selectedRooms < ROOMS_NUMBER.TWO_ROOMS) {
         capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.manyPeople);
       } else {
         capacity.setCustomValidity(``);
       }
       break;
 
-    case 3:
-      if (selectedRooms === 100) {
+    case GUESTS_NUMBER.THREE_GUESTS:
+      if (selectedRooms === ROOMS_NUMBER.NON_RESIDENTIAL) {
         capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.nonResidentialRooms);
-      } else if (selectedRooms < 3) {
+      } else if (selectedRooms < ROOMS_NUMBER.THREE_ROOMS) {
         capacity.setCustomValidity(window.constants.CUSTOM_MESSAGES_ROOMS.manyPeople);
       } else {
         capacity.setCustomValidity(``);
       }
       break;
 
-    case 0:
-      if (selectedRooms === 100) {
+    case GUESTS_NUMBER.NO_GUESTS:
+      if (selectedRooms === ROOMS_NUMBER.NON_RESIDENTIAL) {
         capacity.setCustomValidity(``);
         roomsNumber.setCustomValidity(``);
       } else {
@@ -283,9 +284,8 @@ const clearForm = () => {
   price.placeholder = window.constants.MIN_PRICES[accType];
 };
 
-const clearButton = adForm.querySelector(`.ad-form__reset`);
 clearButton.addEventListener(`click`, () => {
-  clearForm();
+  deactivatePage();
 });
 
 window.form = {

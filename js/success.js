@@ -4,6 +4,7 @@ const deactivatePage = () => {
   window.map.deactivateMap();
   window.form.clearForm();
   window.form.deactivateForm();
+  window.scrollTo(0, 0);
 };
 
 const uploadSuccessHandler = () => {
@@ -44,5 +45,6 @@ const uploadSuccessHandler = () => {
 };
 
 window.success = {
-  uploadSuccessHandler
+  uploadSuccessHandler,
+  deactivatePage
 };

@@ -49,6 +49,20 @@ const FILTER_PRICES = {
   MIDDLE: 50000
 };
 
+const ROOMS_NUMBER = {
+  ONE_ROOM: 1,
+  TWO_ROOMS: 2,
+  THREE_ROOMS: 3,
+  NON_RESIDENTIAL: 100
+};
+
+const GUESTS_NUMBER = {
+  ONE_GUEST: 1,
+  TWO_GUESTS: 2,
+  THREE_GUESTS: 3,
+  NO_GUESTS: 0
+};
+
 const features = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 
 window.constants = {
@@ -66,6 +80,8 @@ window.constants = {
   OFFER_TYPES_TITLES_GENITIVE,
   CUSTOM_MESSAGES_ROOMS,
   FILTER_PRICES,
+  ROOMS_NUMBER,
+  GUESTS_NUMBER,
   features
 };
 

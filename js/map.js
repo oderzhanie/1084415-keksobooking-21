@@ -2,9 +2,13 @@
 
 const map = document.querySelector(`.map`);
 const {renderSimilarObjects} = window.renderObjects;
-const {filters, filtersForm, getFilteredObjects} = window.filter;
+const {filters, features, filtersForm, getFilteredObjects} = window.filter;
 
 filters.forEach((child) => {
+  child.setAttribute(`disabled`, ``);
+});
+
+features.forEach((child) => {
   child.setAttribute(`disabled`, ``);
 });
 
@@ -23,10 +27,13 @@ const activateMap = () => {
     child.removeAttribute(`disabled`);
   });
 
+  features.forEach((child) => {
+    child.removeAttribute(`disabled`);
+  });
+
   filtersForm.addEventListener(`change`, getFilteredObjects);
 
-  const checkboxes = filtersForm.querySelectorAll(`input[type=checkbox]`);
-  checkboxes.forEach((elem) => {
+  features.forEach((elem) => {
     elem.addEventListener(`keydown`, (evt) => {
       if (evt.key === `Enter`) {
         if (!elem.checked) {
@@ -45,6 +52,9 @@ const deactivateMap = () => {
   map.classList.remove(`map--active`);
   map.classList.add(`map--faded`);
   filters.forEach((child) => {
+    child.setAttribute(`disabled`, ``);
+  });
+  features.forEach((child) => {
     child.setAttribute(`disabled`, ``);
   });
 

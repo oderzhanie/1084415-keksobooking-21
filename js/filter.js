@@ -5,6 +5,7 @@ const map = document.querySelector(`.map`);
 const {FILTER_PRICES} = window.constants;
 const {renderSimilarObjects} = window.renderObjects;
 const filters = map.querySelectorAll(`.map__filter`);
+const features = map.querySelectorAll(`.map__checkbox`);
 const filtersForm = map.querySelector(`.map__filters`);
 
 const getFilteredObjects = () => {
@@ -82,6 +83,7 @@ const getFilteredObjects = () => {
 
 window.filter = {
   filters,
+  features,
   filtersForm,
   getFilteredObjects
 };
